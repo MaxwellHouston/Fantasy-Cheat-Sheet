@@ -1,0 +1,9 @@
+nav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    font-size: x-large;
+    background-color: rgb(77, 74, 74);
+    color: whitesmoke;
+    padding: 15px;
+}
