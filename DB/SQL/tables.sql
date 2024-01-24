@@ -80,4 +80,11 @@ CREATE TABLE team_final_rankings (
   PRIMARY KEY(rank, pos)
 );
 
+CREATE TABLE user_account (
+    id VARCHAR(36) PRIMARY KEY,
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(100),
+    name VARCHAR(100),
+    date_created DATE DEFAULT now()
+)
 
