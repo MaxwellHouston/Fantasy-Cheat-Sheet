@@ -21,9 +21,9 @@ module.exports = class TeamModel {
       throw error.stack;
     }
   }
-  async getFinalRankingsById(team_id) {
+  async getFinalRankingsById(teamId) {
     const sql = 'SELECT * FROM team_final_rankings WHERE team_id = $1';
-    const inputs = [team_id];
+    const inputs = [teamId];
     try {
       const rankings = await query(sql, inputs);
       return rankings.rows;
@@ -31,19 +31,19 @@ module.exports = class TeamModel {
       throw error.stack;
     }
   }
-  async getTeamBio(team_id) {
+  async getTeamBio(teamId) {
     const sql = `SELECT teams.id, CONCAT(teams.city, ' ', teams.name) AS teamName, stadiums.name AS stadiumName, 
         CONCAT(stadiums.city, ' ', stadiums.state) AS stadiumLocation, stadiums.capacity
         FROM teams JOIN stadiums ON teams.stadium_id = stadiums.id WHERE teams.id = $1;`;
-    const inputs = [team_id];
+    const inputs = [teamId];
     try {
-        const bio = await query(sql, inputs);
-        return bio.rows[0];
+      const bio = await query(sql, inputs);
+      return bio.rows[0];
     } catch (error) {
-        throw error.stack
+      throw error.stack;
     }
   }
-  async getTeamRoster(team_id) {
+  async getTeamRoster(teamId) {
     const sql = `SELECT *
     FROM (
         SELECT name, id, team_id, pos, CAST(ROW_NUMBER() OVER (ORDER BY SUM(ppr) DESC) AS int) AS Rank, CAST(sum(PPR) AS int) AS total, CAST(ROUND(AVG(ppr), 2) AS int) AS ptsG
@@ -76,12 +76,12 @@ module.exports = class TeamModel {
     )sub
     WHERE team_id = $1
     ORDER BY team_id, pos, rank;`;
-    const inputs = [team_id];
+    const inputs = [teamId];
     try {
-        const roster = await query(sql, inputs);
-        return roster.rows;
+      const roster = await query(sql, inputs);
+      return roster.rows;
     } catch (error) {
-        throw error.stack
+      throw error.stack;
     }
   }
 };
