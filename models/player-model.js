@@ -1,38 +1,38 @@
 const query = require('../DB/db-config');
 
 module.exports = class PlayerModel {
-    async getPlayerPosition(playerId) {
-        const sql = 'SELECT pos FROM players WHERE id = $1';
-        const inputs = [playerId];
-        try {
-          const position = await query(sql, inputs);
-          return position.rows[0];
-        } catch (error) {
-          throw error.stack;
-        }
+  async getPlayerPosition(playerId) {
+    const sql = 'SELECT pos FROM players WHERE id = $1';
+    const inputs = [playerId];
+    try {
+      const position = await query(sql, inputs);
+      return position.rows[0];
+    } catch (error) {
+      throw error.stack;
     }
-    async getAllPlayers() {
-        const sql = 'SELECT * FROM player_stats';
-        const inputs = [];
-        try {
-          const players = await query(sql, inputs);
-          return players.rows;
-        } catch (error) {
-          throw error.stack;
-        }
+  }
+  async getAllPlayers() {
+    const sql = 'SELECT * FROM player_stats';
+    const inputs = [];
+    try {
+      const players = await query(sql, inputs);
+      return players.rows;
+    } catch (error) {
+      throw error.stack;
     }
-    async getPlayerBio(playerId) {
-        const sql = 'SELECT * FROM player_bio WHERE id = $1;';
-        const inputs = [playerId];
-        try {
-          const bio = await query(sql, inputs);
-          return bio.rows[0];
-        } catch (error) {
-          throw error.stack;
-        }
+  }
+  async getPlayerBio(playerId) {
+    const sql = 'SELECT * FROM player_bio WHERE id = $1;';
+    const inputs = [playerId];
+    try {
+      const bio = await query(sql, inputs);
+      return bio.rows[0];
+    } catch (error) {
+      throw error.stack;
     }
-    async getPlayerTotals(playerId) {
-        const sql = `SELECT 
+  }
+  async getPlayerTotals(playerId) {
+    const sql = `SELECT 
         id,
         '2021' as Season,
         (SELECT CAST(Rank AS int)
@@ -70,16 +70,16 @@ module.exports = class PlayerModel {
         ON receiving_weeks.player_id = players.id AND receiving_weeks.week = fantasy_weeks.week
         WHERE id = $1
         GROUP BY id, pos;`;
-        try {
-          const position = await this.getPlayerPosition(playerId);
-          const seasonTotals = await query(sql, [playerId, position.pos]);
-          return seasonTotals.rows;
-        } catch (error) {
-          throw error.stack;
-        }
+    try {
+      const position = await this.getPlayerPosition(playerId);
+      const seasonTotals = await query(sql, [playerId, position.pos]);
+      return seasonTotals.rows;
+    } catch (error) {
+      throw error.stack;
     }
-    async getWeeklyTotals(playerId) {
-      const sql = `SELECT
+  }
+  async getWeeklyTotals(playerId) {
+    const sql = `SELECT
       a.player_id,
       a.week,
       CAST(rank AS int),
@@ -133,38 +133,38 @@ module.exports = class PlayerModel {
       )b
       ON a.week = b.week
       WHERE player_id = $1;`;
-      const weeklyStats = [];
-      try {
-        const position = await this.getPlayerPosition(playerId);
-        for(let i = 1; i <= 18; i++) {
-          const week = await query(sql, [playerId, position.pos, i]);
-          if(week.rows[0]) {
-            weeklyStats.push(week.rows[0]);
-          } else {
-            weeklyStats.push({
-              player_id: Number(playerId),
-              week: i,
-              rank: null,
-              ppr: null,
-              standard: null,
-              passing_att: null,
-              passing_cmp: null,
-              passing_yards: null,
-              passing_tds: null,
-              passing_int: null,
-              rushing_att: null,
-              rushing_yards: null,
-              rushing_tds: null,
-              receiving_tgt: null,
-              receiving_rec: null,
-              receiving_yards: null,
-              receiving_tds: null,
-            })
-          }
+    const weeklyStats = [];
+    try {
+      const position = await this.getPlayerPosition(playerId);
+      for (let i = 1; i <= 18; i++) {
+        const week = await query(sql, [playerId, position.pos, i]);
+        if (week.rows[0]) {
+          weeklyStats.push(week.rows[0]);
+        } else {
+          weeklyStats.push({
+            player_id: Number(playerId),
+            week: i,
+            rank: null,
+            ppr: null,
+            standard: null,
+            passing_att: null,
+            passing_cmp: null,
+            passing_yards: null,
+            passing_tds: null,
+            passing_int: null,
+            rushing_att: null,
+            rushing_yards: null,
+            rushing_tds: null,
+            receiving_tgt: null,
+            receiving_rec: null,
+            receiving_yards: null,
+            receiving_tds: null,
+          });
         }
-        return weeklyStats;
-      } catch (error) {
-        throw error.stack;
       }
+      return weeklyStats;
+    } catch (error) {
+      throw error.stack;
     }
-}
+  }
+};

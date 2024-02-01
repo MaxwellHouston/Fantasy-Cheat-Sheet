@@ -7,14 +7,14 @@ const favoritesInstance = new FavoritesModel();
 
 favoritesRouter.use('/*', checkAuthentication);
 
-favoritesRouter.get('/', async(req, res) => {
-    try {
-        const favorites = await favoritesInstance.getFavorites(req.user.id);
-        res.json(favorites);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-  });
+favoritesRouter.get('/', async (req, res) => {
+  try {
+    const favorites = await favoritesInstance.getFavorites(req.user.id);
+    res.json(favorites);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 favoritesRouter.post('/:playerId', async (req, res) => {
   try {

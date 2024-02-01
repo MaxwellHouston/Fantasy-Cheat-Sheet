@@ -14,7 +14,7 @@ authRouter.post('/sign-up', async (req, res) => {
     const password = await bcrypt.hash(userData.password, 10);
     userData.password = password;
     const newUser = await userInstance.createUser(userData);
-    if(newUser) res.status(201).json('User created')
+    if (newUser) res.status(201).json('User created');
   } catch (error) {
     res.status(500).json(error);
   }
@@ -24,7 +24,11 @@ authRouter.post(
   '/login',
   passport.authenticate('local', { failureRedirect: '/' }),
   async (req, res) => {
-    res.cookie('user', {email: req.user.email, name: req.user.name}, { maxAge: 2592000000 });
+    res.cookie(
+      'user',
+      { email: req.user.email, name: req.user.name },
+      { maxAge: 2592000000 }
+    );
     res.json('User logged in');
   }
 );

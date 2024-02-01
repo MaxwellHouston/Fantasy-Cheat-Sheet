@@ -39,8 +39,8 @@ const loadPassport = (passport) => {
 };
 
 const checkAuthentication = (req, res, next) => {
-  if(req.isAuthenticated()) return next();
-  res.status(400).json({message: 'Please login'});
-}
+  if (req.isAuthenticated()) return next();
+  res.status(400).json({ message: 'Please login' });
+};
 
 module.exports = { loadPassport, checkAuthentication };
