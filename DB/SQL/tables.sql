@@ -88,3 +88,9 @@ CREATE TABLE user_account (
     date_created DATE DEFAULT now()
 )
 
+CREATE TABLE user_players (
+    user_id VARCHAR(36) REFERENCES user_account(id) ON DELETE CASCADE,
+    player_id INTEGER REFERENCES players(id) ON DELETE CASCADE,
+    PRIMARY KEY(user_id, player_id)
+)
+

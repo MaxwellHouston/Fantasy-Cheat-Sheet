@@ -7,6 +7,7 @@ const authRouter = require('./routes/auth-router');
 const { loadPassport } = require('./utils/passport-config');
 const teamRouter = require('./routes/team-router');
 const playerRouter = require('./routes/player-router');
+const favoritesRouter = require('./routes/favorites-router');
 
 const app = express();
 
@@ -26,6 +27,7 @@ loadPassport(passport);
 app.use('/auth', authRouter);
 app.use('/teams', teamRouter);
 app.use('/players', playerRouter);
+app.use('/favorites', favoritesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
